@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Todo App - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 1rem;
+            background: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tab:hover {
+            background: #f8f9fa;
+        }
+
+        .nav-tab.active {
+            background: #667eea;
+            color: white;
+            border-bottom-color: #764ba2;
+        }
+
+        .content-section {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .download-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        h1, h2, h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.3rem;
+            margin-top: 2rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+            color: #555;
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+
+        pre {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: #333;
+        }
+
+        ul, ol {
+            margin: 1rem 0;
+            padding-left: 2rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .feature-card h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+
+        .checkmark {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border-color: #17a2b8;
+            color: #0c5460;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            border-top: 1px solid #ddd;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Simple Todo App</h1>
+            <p>A Java command-line application demonstrating OOP principles</p>
+        </header>
+
+        <div class="download-section">
+            <h2>📄 Documentation Downloads</h2>
+            <p>Access comprehensive documentation for the Simple Todo App project</p>
+            <div class="download-buttons">
+                <a href="Readme.pdf" class="btn" download="Simple_Todo_App_README.pdf">
+                    📄 Download README as PDF
+                </a>
+                <a href="Quick_Start_Guide_Todo_App.pdf" class="btn" download="Quick_Start_Guide_Todo_App.pdf">
+                    🚀 Download Quick Start Guide as PDF
+                </a>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('readme')">README</button>
+            <button class="nav-tab" onclick="showTab('quickstart')">Quick Start Guide</button>
+            <button class="nav-tab" onclick="showTab('features')">Features</button>
+            <button class="nav-tab" onclick="showTab('download')">Download Options</button>
+        </div>
+
+        <div id="readme" class="content-section active">
+            <h1>Simple Todo App</h1>
+            <p>A command-line Java application for managing daily tasks, demonstrating fundamental Java object-oriented principles and data management.</p>
+
+            <h2>Project Overview</h2>
+            <p>This application demonstrates:</p>
+            <ul>
+                <li>Object-Oriented Programming concepts</li>
+                <li>Java language basics (variables, data types, control flow)</li>
+                <li>Classes and Objects</li>
+                <li>Working with Numbers and Strings</li>
+                <li>Package structure</li>
+                <li>Collection management (ArrayList)</li>
+            </ul>
+
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3><span class="emoji">✅</span> Task Management</h3>
+                    <ul>
+                        <li>Add tasks with descriptions</li>
+                        <li>View all tasks</li>
+                        <li>View pending/completed tasks</li>
+                        <li>Mark tasks as complete/incomplete</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="emoji">🗑️</span> Task Operations</h3>
+                    <ul>
+                        <li>Delete individual tasks</li>
+                        <li>Clear all tasks</li>
+                        <li>Task statistics with progress bar</li>
+                        <li>In-memory data storage using ArrayList</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2>Project Structure</h2>
+            <pre><code>Simple_todo_app/
+├── src/
+│   └── com/
+│       └── todoapp/
+│           ├── Task.java          # Task class with properties and methods
+│           ├── TaskManager.java   # Task management logic
+│           └── TodoApp.java       # Main application class
+├── README.md
+├── .gitignore
+└── compile.bat                    # Windows batch file for compilation</code></pre>
+
+            <h2>Key Java Concepts Demonstrated</h2>
+            <div class="alert alert-info">
+                <strong>Learning Objectives:</strong>
+                <ul>
+                    <li><span class="checkmark">✓</span> Java syntax and language basics</li>
+                    <li><span class="checkmark">✓</span> Object-oriented programming principles</li>
+                    <li><span class="checkmark">✓</span> Class and object creation</li>
+                    <li><span class="checkmark">✓</span> Collection management (ArrayList)</li>
+                    <li><span class="checkmark">✓</span> String and number handling</li>
+                    <li><span class="checkmark">✓</span> Package organization</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="quickstart" class="content-section">
+            <h1>Quick Start Guide</h1>
+
+            <div class="alert alert-success">
+                <strong>Prerequisites:</strong> Java Development Kit (JDK) 8 or higher
+            </div>
+
+            <h2>Running the Application</h2>
+
+            <h3>Method 1: Using the Batch File (Recommended for Windows)</h3>
+            <pre><code>.\compile.bat</code></pre>
+
+            <h3>Method 2: Manual Compilation and Execution</h3>
+            <pre><code># Compile the Java files
+javac -d . src\com\todoapp\*.java
+
+# Run the interactive application
+java com.todoapp.TodoApp
+
+# Or run the demo
+java com.todoapp.TodoAppDemo</code></pre>
+
+            <h3>Method 3: Using separate bin directory</h3>
+            <pre><code># Create bin directory and compile
+mkdir bin
+javac -d bin src\com\todoapp\*.java
+
+# Run from bin directory
+java -cp bin com.todoapp.TodoApp</code></pre>
+
+            <h2>Application Features</h2>
+            <p>The Todo App includes the following menu options:</p>
+            <ol>
+                <li><strong>Add Task</strong> - Create new tasks with descriptions</li>
+                <li><strong>View All Tasks</strong> - Display all tasks with status</li>
+                <li><strong>View Pending Tasks</strong> - Show only incomplete tasks</li>
+                <li><strong>View Completed Tasks</strong> - Show only finished tasks</li>
+                <li><strong>Mark Task as Complete</strong> - Change task status to completed</li>
+                <li><strong>Mark Task as Incomplete</strong> - Change task status back to pending</li>
+                <li><strong>Delete Task</strong> - Remove a task permanently</li>
+                <li><strong>Show Statistics</strong> - Display progress and completion rate</li>
+                <li><strong>Clear All Tasks</strong> - Remove all tasks (with confirmation)</li>
+                <li><strong>Exit</strong> - Quit the application</li>
+            </ol>
+        </div>
+
+        <div id="features" class="content-section">
+            <h1>Application Features</h1>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3><span class="emoji">🎯</span> Object-Oriented Design</h3>
+                    <p>Demonstrates encapsulation, inheritance, and polymorphism through well-structured classes.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="emoji">💾</span> Data Management</h3>
+                    <p>Uses ArrayList for dynamic data storage with full CRUD operations.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="emoji">🖥️</span> User Interface</h3>
+                    <p>Interactive command-line interface with menu-driven navigation.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="emoji">📊</span> Progress Tracking</h3>
+                    <p>Visual progress bars and statistics to track task completion.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="emoji">🔒</span> Input Validation</h3>
+                    <p>Robust error handling and input validation for better user experience.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="emoji">📦</span> Package Structure</h3>
+                    <p>Organized code structure following Java package conventions.</p>
+                </div>
+            </div>
+
+            <h2>Sample Application Output</h2>
+            <pre><code>╔══════════════════════════════════════╗
+║        Welcome to Todo Manager       ║
+║     Your Simple Task Management      ║
+║            Application               ║
+╚══════════════════════════════════════╝
+
+┌─────────────────────────────────────┐
+│              MAIN MENU              │
+├─────────────────────────────────────┤
+│ 1. Add Task                         │
+│ 2. View All Tasks                   │
+│ 3. View Pending Tasks               │
+│ 4. View Completed Tasks             │
+│ 5. Mark Task as Complete            │
+│ 6. Mark Task as Incomplete          │
+│ 7. Delete Task                      │
+│ 8. Show Statistics                  │
+│ 9. Clear All Tasks                  │
+│ 0. Exit                             │
+└─────────────────────────────────────┘</code></pre>
+        </div>
+
+        <div id="download" class="content-section">
+            <h1>Download Options</h1>
+
+            <h2>Download Options</h2>
+
+            <p>Access the project documentation in PDF format for offline reading and printing.</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3><span class="emoji">📄</span> README PDF</h3>
+                    <p>Complete project documentation including setup, usage, and technical details.</p>
+                    <a href="README.pdf" class="btn btn-primary" download="Simple_Todo_App_README.pdf">Download README PDF</a>
+                </div>
+                <div class="feature-card">
+                    <h3><span class="emoji">🚀</span> Quick Start PDF</h3>
+                    <p>Step-by-step guide to get the application running quickly.</p>
+                    <a href="Quick_Start_Guide_Todo_App.pdf" class="btn btn-primary" download="Quick_Start_Guide_Todo_App.pdf">Download Quick Start PDF</a>
+                </div>
+            </div>
+
+            <div class="alert alert-success">
+                <h3>📥 Direct PDF Downloads Available</h3>
+                <p>Click the download buttons above to directly download the PDF documentation files to your computer. No additional conversion steps required!</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Simple Todo App - Educational Project demonstrating Java OOP concepts</p>
+            <p>Created for learning purposes - Feel free to modify and extend!</p>
+        </footer>
+    </div>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all content sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected section and activate tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
